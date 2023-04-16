@@ -49,6 +49,7 @@ function News() {
   };
   const editDataSchema = {
     id: `${editData?.id}`,
+    newsType: newsType,
     title: title,
     description: description,
   };
@@ -68,7 +69,12 @@ function News() {
     axios
       .post(
         `${process.env.REACT_APP_BASE_URL}/v1/News/editNews`,
-        editDataSchema
+        editDataSchema,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       )
       .then((res) => {
         if (res.data.isSuccess == true) {
@@ -167,11 +173,11 @@ function News() {
                   Гарчиг : {news.title}
                 </span>
                 <span
-                  className={`w-[50px] md:w-[130px] text-[8px] md:text-[13px] flex items-center justify-center px-2 h-6 ${
-                    news.newsType == 1 ? "bg-emerald-500  " : "bg-emerald-500"
+                  className={`w-[50px] md:w-[130px] text-[8px] nunito-700 md:text-[13px] flex items-center justify-center px-2 h-6 ${
+                    news.newsType == 1 ? "bg-sky-600  " : "bg-emerald-500"
                   } rounded-full  text-white`}
                 >
-                  {news.newsType == 1 ? "Мэдээ мэдээлэл" : "Ажил"}
+                  {news.newsType == 1 ? "Мэдээ" : "Ажил"}
                 </span>
               </p>
               <p className="m-0 truncate text-[10px] md:text-[13px]">
