@@ -63,15 +63,22 @@ function Layout({ children }) {
           >
             <i className="bi bi-speedometer2"></i> Мэдээ мэдээлэл
           </button>
-          <button className="cursor-pointer select-none dashboard-nav-item">
+          <button
+            onClick={() => {
+              navigate("/job");
+            }}
+            className={`cursor-pointer select-none ${
+              location.pathname == "/job" && "active"
+            } dashboard-nav-item`}
+          >
             <i className="bi bi-collection-fill"></i> Ажил{" "}
           </button>
           <button
             onClick={() => {
-              navigate("/anket");
+              navigate("/CV");
             }}
             className={`cursor-pointer select-none ${
-              location.pathname == "/anket" && "active"
+              location.pathname == "/CV" && "active"
             } dashboard-nav-item`}
           >
             <i className="bi bi-cloud-upload-fill"></i> CV{" "}
@@ -80,9 +87,6 @@ function Layout({ children }) {
           <button className="cursor-pointer select-none dashboard-nav-item">
             <i className="bi bi-people-fill"></i> Admin{" "}
           </button>
-          {/* <button className="cursor-pointer select-none dashboard-nav-item">
-            <i className="bi bi-gear-wide"></i> Settings{" "}
-          </button> */}
 
           <div className="nav-item-divider"></div>
           <button

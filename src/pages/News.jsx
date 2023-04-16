@@ -130,6 +130,7 @@ function News() {
         }
       });
   };
+  // console.log(data);
   return (
     <Layout>
       <ToastContainer />
@@ -153,7 +154,7 @@ function News() {
           return (
             <div
               key={index}
-              className="w-[165px] md:w-[280px] h-[260px] md:h-[380px] flex flex-col rounded shadow p-2 bg-white parent transition-all overflow-hidden"
+              className="w-[165px] md:w-[280px] h-[280px] md:h-[380px] flex flex-col rounded shadow p-2 bg-white parent transition-all overflow-hidden"
             >
               <div
                 onClick={() => {
@@ -186,6 +187,7 @@ function News() {
               <p className="m-0 text-[10px] md:text-[13px]">
                 Үүсгэсэн: {news.createdDate}
               </p>
+
               <div className="px-2 py-1 flex justify-between transition-all mt-auto">
                 <button
                   onClick={() => {
@@ -197,6 +199,7 @@ function News() {
                   <i className="bi bi-vector-pen mr-1"></i>
                   Засах
                 </button>
+
                 <button
                   onClick={() => {
                     handleDeleteNews(news.id);
@@ -207,6 +210,16 @@ function News() {
                   Устгах
                 </button>
               </div>
+              <button
+                onClick={() => {
+                  setModalShow(true);
+                  setId(news.id);
+                }}
+                className="text-[10px] mt-2 md:text-[13px] rounded bg-gray-400 nunito-700 text-white shadow active:bg-gray-400 px-2 py-1"
+              >
+                <i className="bi bi-plus mr-1"></i>
+                Зураг нэмэх
+              </button>
             </div>
           );
         })}

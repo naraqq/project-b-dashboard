@@ -10,6 +10,7 @@ import { CheckLogin } from "./core/CheckLogin";
 import News from "./pages/News";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CV from "./pages/CV";
+import Anket from "./pages/Anket";
 function App() {
   return (
     <BrowserRouter>
@@ -39,10 +40,18 @@ function App() {
           }
         />
         <Route
-          path="/anket"
+          path="/job"
           element={
             <ProtectedRoute>
               <CV />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/CV"
+          element={
+            <ProtectedRoute>
+              <Anket />
             </ProtectedRoute>
           }
         />
