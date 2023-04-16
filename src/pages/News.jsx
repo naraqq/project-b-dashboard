@@ -104,10 +104,14 @@ function News() {
     axios
       .post(
         `${process.env.REACT_APP_BASE_URL}/v1/News/addImageToNews/${id}`,
-        images[0]
+        images[0],
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       )
       .then((res) => {
-        console.log(res.data);
         if (res.data.isSuccess == true) {
           setModalShow(false);
           setTrigger(!trigger);
@@ -116,6 +120,7 @@ function News() {
         }
       });
   };
+  console.log(data);
   return (
     <Layout>
       <ToastContainer />

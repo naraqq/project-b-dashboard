@@ -14,7 +14,11 @@ function Login() {
   };
   const handleLogin = () => {
     axios
-      .post("http://installnaran.mn:9000/v1/Login/login", data)
+      .post("http://installnaran.mn:9000/v1/Login/login", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((res) => {
         if (res.data.isSuccess == true) {
           localStorage.setItem("token", res.data.access_token);
