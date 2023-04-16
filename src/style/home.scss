@@ -125,6 +125,7 @@ h1,
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  width: 100vw;
   min-height: 100vh;
 }
 
@@ -138,10 +139,10 @@ h1,
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-flex: 2;
-  -webkit-flex-grow: 2;
-  -ms-flex-positive: 2;
-  flex-grow: 2;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+  -ms-flex-positive: 0;
+  flex-grow: 0;
   margin-top: 64px;
 }
 
@@ -201,7 +202,7 @@ h1,
   background-color: #443ea2;
 }
 
-.dashboard-nav a {
+.dashboard-nav button {
   color: #fff;
 }
 
@@ -410,7 +411,7 @@ h1,
 
 @media (min-width: 992px) {
   .dashboard-app {
-    margin-left: 238px;
+    margin-left: 120px;
   }
 
   .dashboard-compact .dashboard-app {

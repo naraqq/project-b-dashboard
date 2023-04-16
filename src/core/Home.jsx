@@ -5,12 +5,12 @@ function Home() {
     <Layout>
       <div>
         <div className="container">
-          <div className="card ">
+          <div className="card mt-10">
             <div className="card-header">
-              <h1>Welcome back </h1>
+              <h1>Тавтай морилно уу </h1>
             </div>
             <div className="card-body">
-              <p>Your account type is: Administrator</p>
+              <p>Таны хэрэглэгчийн эрх: Administrator</p>
             </div>
           </div>
         </div>

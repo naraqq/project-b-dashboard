@@ -37,9 +37,9 @@ function Layout({ children }) {
           <button onClick={handleMenuToggle} className="menu-toggle">
             <i className="bi bi-list"></i>
           </button>
-          <button className="brand-logo">
+          <a href="#" className="brand-logo">
             <i className="bi bi-anchor"></i> <span>Install Naran XXK</span>
-          </button>
+          </a>
         </header>
         <nav className="dashboard-nav-list">
           <button
@@ -66,14 +66,7 @@ function Layout({ children }) {
           <button className="cursor-pointer select-none dashboard-nav-item">
             <i className="bi bi-collection-fill"></i> Ажил{" "}
           </button>
-          <button
-            onClick={() => {
-              navigate("/anket");
-            }}
-            className={`cursor-pointer select-none ${
-              location.pathname == "/anket" && "active"
-            } dashboard-nav-item`}
-          >
+          <button className="cursor-pointer select-none dashboard-nav-item">
             <i className="bi bi-cloud-upload-fill"></i> CV{" "}
           </button>
 
@@ -129,7 +122,7 @@ function Layout({ children }) {
           </button>
         </header>
       </div>
-      <div className="dashboard-app w-full">
+      <div className="dashboard-app">
         <header className="dashboard-toolbar !h-10">
           <button onClick={handleMenuToggle} className="menu-toggle">
             <i className="bi bi-list"></i>
