@@ -34,9 +34,9 @@ function Login() {
     <div className="body">
       <ToastContainer />
       <div className="login">
-        <h1 className="mb-5 !text-[25px] flex items-center text-center">
-          <img className="w-10 mr-2" src="logo.svg" />
-          Install Naran XXK
+        <h1 className="mb-5  text-[15px] md:!text-[25px] flex flex-col items-center text-center">
+          <img className="w-10 mr-2 mb-2" src="logo.svg" />
+          ИНСТАЛЛ НАРАН КОНСТРАКШН XXK
         </h1>
         <form method="post">
           <input
@@ -62,7 +62,7 @@ function Login() {
               e.preventDefault();
               handleLogin();
             }}
-            className="btn btn-primary btn-block btn-large"
+            className="btn btn-primary btn-block btn-large !border-none !bg-red-500"
           >
             Нэвтрэх
           </button>
