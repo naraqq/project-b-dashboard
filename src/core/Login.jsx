@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import $ from "jquery";
 import axios from "axios";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-
 function Login() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -26,7 +24,7 @@ function Login() {
           window.location.reload();
         } else {
           toast.error(res.data.resultMessage, {
-            position: "bottom-right",
+            position: "top-right",
           });
         }
       })
@@ -36,7 +34,10 @@ function Login() {
     <div className="body">
       <ToastContainer />
       <div className="login">
-        <h1 className="mb-5 !text-[25px]">Install Naran XXK</h1>
+        <h1 className="mb-5 !text-[25px] flex items-center text-center">
+          <img className="w-10 mr-2" src="logo.svg" />
+          Install Naran XXK
+        </h1>
         <form method="post">
           <input
             onChange={(e) => {
