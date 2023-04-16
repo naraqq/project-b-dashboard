@@ -132,7 +132,7 @@ function Layout({ children }) {
       <div className="dashboard-app w-full">
         <header className="dashboard-toolbar !h-10">
           <button onClick={handleMenuToggle} className="menu-toggle">
-            <i className="bi bi-list"></i>
+            <i className="bi bi-list !text-white"></i>
           </button>
         </header>
         <div className="w-full md:w-[calc(100vw-240px)] h-[calc(100vh-64px)] overflow-scroll overflow-x-hidden ">

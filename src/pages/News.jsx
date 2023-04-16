@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import ImageUploading from "react-images-uploading";
+import Loading from "../components/Loading";
 function News() {
   const [data, setData] = useState([]);
   const [trigger, setTrigger] = useState(false);
@@ -97,10 +98,12 @@ function News() {
 
   const onChange = (imageList, addUpdateIndex) => {
     // data for submit
-    console.log(imageList, addUpdateIndex);
     setImages(imageList);
   };
+  // console.log(data);
+  const [loading, setLoading] = useState(false);
   const handleSubmitImage = () => {
+    setLoading(true);
     axios
       .post(
         `${process.env.REACT_APP_BASE_URL}/v1/News/addImageToNews/${id}`,
@@ -115,12 +118,12 @@ function News() {
         if (res.data.isSuccess == true) {
           setModalShow(false);
           setTrigger(!trigger);
+          setLoading(false);
         } else {
           toast.info(res.data.resultMessage);
         }
       });
   };
-  console.log(data);
   return (
     <Layout>
       <ToastContainer />
@@ -144,7 +147,7 @@ function News() {
           return (
             <div
               key={index}
-              className="w-[300px] h-[400px] flex flex-col rounded shadow p-3 bg-white parent transition-all overflow-hidden"
+              className="w-[165px] md:w-[280px] h-[260px] md:h-[380px] flex flex-col rounded shadow p-2 bg-white parent transition-all overflow-hidden"
             >
               <div
                 onClick={() => {
@@ -155,29 +158,35 @@ function News() {
               >
                 <img
                   src={`${news.imgPath ? news.imgPath : "notfound.webp"}`}
-                  className="h-[200px] w-full border"
+                  className="h-[120px] md:h-[200px] w-full border"
                   alt="Зураг олдсонгүй..."
                 />
               </div>
               <p className="mt-2 mb-0 flex justify-between">
-                <span className="truncate">Гарчиг : {news.title}</span>
+                <span className="truncate text-[10px] md:text-[13px]">
+                  Гарчиг : {news.title}
+                </span>
                 <span
-                  className={`w-[130px] flex items-center justify-center h-6 ${
+                  className={`w-[50px] md:w-[130px] text-[8px] md:text-[13px] flex items-center justify-center px-2 h-6 ${
                     news.newsType == 1 ? "bg-emerald-500  " : "bg-emerald-500"
-                  } rounded-full text-[12px] text-white`}
+                  } rounded-full  text-white`}
                 >
                   {news.newsType == 1 ? "Мэдээ мэдээлэл" : "Ажил"}
                 </span>
               </p>
-              <p className="m-0 truncate">Тайлбар: {news.description}</p>
-              <p className="m-0">Үүсгэсэн: {news.createdDate}</p>
+              <p className="m-0 truncate text-[10px] md:text-[13px]">
+                Тайлбар: {news.description}
+              </p>
+              <p className="m-0 text-[10px] md:text-[13px]">
+                Үүсгэсэн: {news.createdDate}
+              </p>
               <div className="px-2 py-1 flex justify-between transition-all mt-auto">
                 <button
                   onClick={() => {
                     setEdit(!edit);
                     setEditData(news);
                   }}
-                  className=" rounded bg-amber-600 text-white shadow active:bg-amber-400 px-2 py-1"
+                  className="text-[10px] md:text-[13px] rounded bg-amber-600 text-white shadow active:bg-amber-400 px-2 py-1"
                 >
                   <i className="bi bi-vector-pen mr-1"></i>
                   Засах
@@ -186,7 +195,7 @@ function News() {
                   onClick={() => {
                     handleDeleteNews(news.id);
                   }}
-                  className=" rounded bg-sky-600 text-white shadow active:bg-sky-400 px-2 py-1"
+                  className="text-[10px] md:text-[13px] rounded bg-sky-600 text-white shadow active:bg-sky-400 px-2 py-1"
                 >
                   <i className="bi bi-trash mr-1"></i>
                   Устгах
@@ -293,6 +302,8 @@ function News() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {loading && <Loading />}
+
           <ImageUploading
             multiple
             value={images}

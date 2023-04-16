@@ -52,7 +52,7 @@ function CV() {
       </div>
       <div className="w-full min-h-screen items-center md:items-start bg-gray-200 flex flex-col md:flex-row justify-center md:justify-start gap-3 p-3">
         {ankets.map((anket, index) => {
-          console.log(anket);
+          // console.log(anket);
           return (
             <div
               key={index}
@@ -87,7 +87,7 @@ function CV() {
                   Засах
                 </button>
                 <button className="rounded select-none text-gray-500 flex items-center justify-center bg-gray-300 active:bg-gray-400 nunito-700 w-1/2 text-sm">
-                  Дэлгэрэнгүй
+                  Устгах
                 </button>
               </div>
             </div>
