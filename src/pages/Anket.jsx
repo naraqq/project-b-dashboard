@@ -4,10 +4,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useStateContext } from "../context/ContextProvider";
 import { logout } from "../static/service";
+import { useNavigate } from "react-router-dom";
+import Loading from "../components/Loading";
 function Anket() {
   const { TOKEN } = useStateContext();
   const [ankets, setAnkets] = useState([]);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true);
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/v1/Anket/listAnket`, {
         headers: {
@@ -16,6 +21,7 @@ function Anket() {
       })
       .then((res) => {
         if (res.data.isSuccess == true) {
+          setLoading(false);
           setAnkets(res.data.datas);
         } else {
           if (res.data.errorCode == 401) {
@@ -35,6 +41,7 @@ function Anket() {
   return (
     <Layout>
       <ToastContainer />
+      {loading && <Loading />}
       <div className="w-full px-2 py-3 bg-gray-200 min-h-screen">
         {ankets.map((anket, index) => {
           return (
@@ -82,7 +89,12 @@ function Anket() {
                 <span>{anket.createDate}</span>
               </p>
 
-              <button className="mt-auto text-[10px] mt-2 md:text-[13px] rounded bg-gray-400 active:bg-gray-300 nunito-700 text-white shadow active:bg-gray-400 px-2 py-1">
+              <button
+                onClick={() => {
+                  navigate("/CV-detail", { state: anket });
+                }}
+                className="mt-auto text-[10px] mt-2 md:text-[13px] rounded bg-gray-400 active:bg-gray-300 nunito-700 text-white shadow active:bg-gray-400 px-2 py-1"
+              >
                 Дэлгэрэнгүй
               </button>
             </div>

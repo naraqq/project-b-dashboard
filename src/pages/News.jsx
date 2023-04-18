@@ -42,16 +42,19 @@ function News() {
   const [newsType, setNewsType] = useState("0");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [body, setBody] = useState("");
   const newsData = {
     newsType: newsType,
     title: title,
     description: description,
+    newsBody: body,
   };
   const editDataSchema = {
     id: `${editData?.id}`,
     newsType: newsType,
     title: title,
     description: description,
+    newsBody: body,
   };
   const handleAddNews = () => {
     axios
@@ -94,6 +97,7 @@ function News() {
       setNewsType(editData?.newsType);
       setTitle(editData?.title);
       setDescription(editData?.description);
+      setBody(editData?.newsBody);
       setShow(true);
     }
   }, [edit]);
@@ -153,7 +157,7 @@ function News() {
         {data.map((news, index) => {
           return (
             <div
-              key={index}
+              key={JSON.stringify(news + index)}
               className="w-[165px] md:w-[280px] h-[280px] md:h-[380px] flex flex-col rounded shadow p-2 bg-white parent transition-all overflow-hidden"
             >
               <div
@@ -288,6 +292,16 @@ function News() {
               className="px-3 py-2 border rounded w-full mt-[10px]"
               type="text"
               placeholder="Тайлбар"
+              required="required"
+            />
+            <textarea
+              onChange={(e) => {
+                setBody(e.target.value);
+              }}
+              value={body}
+              className="px-3 py-2 border rounded w-full mt-[10px] min-h-[200px]"
+              type="text"
+              placeholder="Дэлгэрэнгүй"
               required="required"
             />
           </div>
