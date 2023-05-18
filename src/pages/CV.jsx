@@ -13,6 +13,53 @@ function CV() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [ankets, setAnkets] = useState([]);
+  const [requirements, setRequirements] = useState([]);
+  const final = {
+    companyId: "",
+    jobTitle: "",
+    jobRequirement: requirements,
+    jobDuty: "",
+    applicableStartDate: "",
+    applicableEndDate: "",
+  };
+  const [trigger, setTrigger] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+  const [deleteIt, setDeleteIt] = useState("");
+  const handleDelete = (id) => {
+    setDeleteIt(id);
+    setConfirm(true);
+  };
+  const acctualDelete = () => {
+    axios
+      .get(
+        `${process.env.REACT_APP_BASE_URL}/v1/Anket/deleteJobToApply/${deleteIt}`,
+        {
+          headers: {
+            Authorization: TOKEN,
+            accept: "text/plain",
+          },
+        }
+      )
+      .then((res) => {
+        setTrigger(!trigger);
+        setConfirm(false);
+        // if (res.data.isSuccess == true) {
+        //   setAnkets(res.data.datas);
+        // } else {
+        //   if (res.data.errorCode == 401) {
+        //     logout();
+        //   } else {
+        //     toast.info(res.data.resultMessage, {
+        //       position: "bottom-right",
+        //     });
+        //   }
+        // }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/v1/Anket/getJobToApplyAdmin`, {
@@ -36,7 +83,7 @@ function CV() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [trigger]);
   // console.log(ankets);
   return (
     <Layout>
@@ -50,13 +97,35 @@ function CV() {
           Ажлын зар нэмэх
         </button>
       </div>
+      {confirm && (
+        <div className="fixed  w-screen h-screen bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="rounded bg-white shadow w-2/3 md:w-1/3 flex flex-col justify-end p-3">
+            <p>Устгах товчыг дарж баталгаажуулна уу</p>
+            <div className="w-full h-[calc(50%)] flex justify-end">
+              <button
+                onClick={acctualDelete}
+                className="rounded bg-red-400 text-white p-2"
+              >
+                Устгах
+              </button>
+              <button
+                onClick={() => {
+                  setConfirm(false);
+                }}
+                className="rounded bg-sky-400 text-white p-2 ml-2"
+              >
+                Цуцлах
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="w-full min-h-screen items-center md:items-start bg-gray-200 flex flex-col md:grid grid-cols-4 justify-center md:justify-start gap-3 p-3">
         {ankets.map((anket, index) => {
-          // console.log(anket);
           return (
             <div
               key={index}
-              className="bg-white rounded shadow w-full cursor-pointer p-3 scale-cus transition-all flex flex-col justify-between"
+              className="bg-white h-[400px] rounded shadow w-full cursor-pointer p-3 scale-cus transition-all flex flex-col justify-between"
             >
               <div className="">
                 <div className="nunito-600">
@@ -86,7 +155,12 @@ function CV() {
                 <button className="rounded select-none text-white flex items-center justify-center bg-blue-500 active:bg-blue-400 nunito-700 w-1/2 text-sm">
                   Засах
                 </button>
-                <button className="rounded select-none text-gray-500 flex items-center justify-center bg-gray-300 active:bg-gray-400 nunito-700 w-1/2 text-sm">
+                <button
+                  onClick={() => {
+                    handleDelete(anket.jobid);
+                  }}
+                  className="rounded select-none text-gray-500 flex items-center justify-center bg-gray-300 active:bg-gray-400 nunito-700 w-1/2 text-sm"
+                >
                   Устгах
                 </button>
               </div>
@@ -115,11 +189,9 @@ function CV() {
         <Modal.Body>
           <div className="w-full">
             <select name="" id="">
-              <option disabled value="0">
-                Мэдээний төрөл сонгоно уу.
-              </option>
-              <option value="2">Бидний хийсэн ажил</option>
-              <option value="1">Мэдээ мэдээлэл.</option>
+              <option value="0">Компани сонгоно уу.</option>
+              <option value="2">Инсталл наран Конкрит</option>
+              <option value="1">Инсталл Наран Констрашн.</option>
             </select>
             <textarea
               className="px-3 py-2 border rounded w-full"
@@ -130,7 +202,7 @@ function CV() {
             <textarea
               className="px-3 py-2 border rounded w-full mt-[10px]"
               type="text"
-              placeholder="Тайлбар"
+              placeholder="Үүрэг"
               required="required"
             />
           </div>

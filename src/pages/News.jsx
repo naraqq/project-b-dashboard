@@ -153,7 +153,7 @@ function News() {
           Мэдээ нэмэх
         </button>
       </div>
-      <div className="w-full flex nunito-300 flex-row md:grid grid-cols-4 gap-4 p-3 justify-center md:justify-start">
+      <div className="w-full h-full  nunito-300 flex-row md:grid grid-cols-3 gap-4 p-3 justify-center ">
         {data.map((news, index) => {
           return (
             <div

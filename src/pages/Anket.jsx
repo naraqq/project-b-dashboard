@@ -42,7 +42,7 @@ function Anket() {
     <Layout>
       <ToastContainer />
       {loading && <Loading />}
-      <div className="w-full px-2 py-3 bg-gray-200 min-h-screen flex flex-col md:grid grid-cols-4 grid-rows-4 gap-4">
+      <div className="w-full px-2 py-3 bg-gray-200 min-h-screen flex flex-col md:grid grid-cols-3 grid-rows-4 gap-4">
         {ankets.map((anket, index) => {
           return (
             <div
