@@ -153,12 +153,12 @@ function News() {
           Мэдээ нэмэх
         </button>
       </div>
-      <div className="w-full flex nunito-300 flex-row md:flex-row flex-wrap gap-2 p-3 justify-center md:justify-start">
+      <div className="w-full flex nunito-300 flex-row md:grid grid-cols-4 gap-4 p-3 justify-center md:justify-start">
         {data.map((news, index) => {
           return (
             <div
               key={JSON.stringify(news + index)}
-              className="w-[165px] md:w-[280px] h-[280px] md:h-[380px] flex flex-col rounded shadow p-2 bg-white parent transition-all overflow-hidden"
+              className="w-full h-[280px] md:h-[380px] flex flex-col rounded shadow p-2 bg-white parent transition-all overflow-hidden"
             >
               <div
                 onClick={() => {

@@ -50,13 +50,13 @@ function CV() {
           Ажлын зар нэмэх
         </button>
       </div>
-      <div className="w-full min-h-screen items-center md:items-start bg-gray-200 flex flex-col md:flex-row justify-center md:justify-start gap-3 p-3">
+      <div className="w-full min-h-screen items-center md:items-start bg-gray-200 flex flex-col md:grid grid-cols-4 justify-center md:justify-start gap-3 p-3">
         {ankets.map((anket, index) => {
           // console.log(anket);
           return (
             <div
               key={index}
-              className="bg-white rounded shadow w-[300px] h-[300px] cursor-pointer p-3 scale-cus transition-all flex flex-col justify-between"
+              className="bg-white rounded shadow w-full cursor-pointer p-3 scale-cus transition-all flex flex-col justify-between"
             >
               <div className="">
                 <div className="nunito-600">
