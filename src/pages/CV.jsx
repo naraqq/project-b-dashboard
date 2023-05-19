@@ -1,26 +1,64 @@
 import Layout from "../layout/Layout";
 import { ToastContainer } from "react-toastify";
 import Button from "react-bootstrap/Button";
+import { Form } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useStateContext } from "../context/ContextProvider";
 import { toast } from "react-toastify";
 import { logout } from "../static/service";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 function CV() {
+  function addZero(i) {
+    if (i < 10) {
+      i = "0" + i;
+    }
+    return i;
+  }
+  const [selectV, setSelectV] = useState(new Date());
+  const [value, setValue] = useState(new Date());
+  var datestring =
+    value.getFullYear() +
+    "" +
+    addZero(value.getMonth() + 1) +
+    addZero(value.getDate()) +
+    addZero(value.getHours()) +
+    addZero(value.getMinutes()) +
+    addZero(value.getSeconds());
+  var datestring2 =
+    selectV.getFullYear() +
+    "" +
+    addZero(selectV.getMonth() + 1) +
+    addZero(selectV.getDate()) +
+    addZero(selectV.getHours()) +
+    addZero(selectV.getMinutes()) +
+    addZero(selectV.getSeconds());
   const [show, setShow] = useState(false);
   const { TOKEN } = useStateContext();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [ankets, setAnkets] = useState([]);
-  const [requirements, setRequirements] = useState([]);
+  const [companyId, setCompanyId] = useState("0");
+  const [jobTitle, setJobTitle] = useState("");
+  const [children, setChildren] = useState([""]);
+  const [jobDuty, setJobDuty] = useState("");
   const final = {
-    companyId: "",
-    jobTitle: "",
-    jobRequirement: requirements,
-    jobDuty: "",
-    applicableStartDate: "",
-    applicableEndDate: "",
+    companyId: companyId,
+    jobTitle: jobTitle,
+    jobRequirement: children,
+    jobDuty: jobDuty,
+    applicableStartDate: datestring,
+    applicableEndDate: datestring2,
+  };
+  const addChild = () => {
+    setChildren([...children, ""]);
+  };
+  const removeChild = (index) => {
+    const newChildren = [...children];
+    newChildren.splice(index, 1);
+    setChildren(newChildren);
   };
   const [trigger, setTrigger] = useState(false);
   const [confirm, setConfirm] = useState(false);
@@ -43,21 +81,47 @@ function CV() {
       .then((res) => {
         setTrigger(!trigger);
         setConfirm(false);
-        // if (res.data.isSuccess == true) {
-        //   setAnkets(res.data.datas);
-        // } else {
-        //   if (res.data.errorCode == 401) {
-        //     logout();
-        //   } else {
-        //     toast.info(res.data.resultMessage, {
-        //       position: "bottom-right",
-        //     });
-        //   }
-        // }
       })
       .catch((err) => {
-        console.log(err);
+        toast.error("Алдаа 40331");
       });
+  };
+  const handleChange = (index, event) => {
+    const newChildren = [...children];
+    newChildren[index] = event.target.value;
+    setChildren(newChildren);
+  };
+  const renderChildren = () => {
+    return children.map((child, index) => {
+      return (
+        <Form.Group
+          key={index}
+          style={{
+            position: "relative",
+            width: "100%",
+          }}
+        >
+          <div className="p-2 bg-gray-100 rounded flex">
+            <div>{index}.</div>
+            <textarea
+              onChange={(e) => {
+                handleChange(index, e);
+              }}
+              type="text"
+              className="p-2 mx-2 w-full rounded text-sm"
+            />
+            {children.length > 1 && (
+              <i
+                onClick={() => {
+                  removeChild(index);
+                }}
+                className="bi bi-trash mt-auto hover:text-red-400 cursor-pointer"
+              ></i>
+            )}
+          </div>
+        </Form.Group>
+      );
+    });
   };
 
   useEffect(() => {
@@ -84,7 +148,26 @@ function CV() {
         console.log(err);
       });
   }, [trigger]);
+  const [loading, setLoading] = useState(false);
   // console.log(ankets);
+  const handleSubmit = () => {
+    axios
+      .post(`${process.env.REACT_APP_BASE_URL}/v1/Anket/addJobToApply`, final, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        if (res.data.isSuccess == true) {
+          setShow(false);
+          setTrigger(!trigger);
+        } else {
+          toast.info(res.data.resultMessage);
+        }
+      });
+  };
+
   return (
     <Layout>
       <ToastContainer />
@@ -152,9 +235,9 @@ function CV() {
                 })}
               </div>
               <div className="w-full h-8 flex gap-2">
-                <button className="rounded select-none text-white flex items-center justify-center bg-blue-500 active:bg-blue-400 nunito-700 w-1/2 text-sm">
+                {/* <button className="rounded select-none text-white flex items-center justify-center bg-blue-500 active:bg-blue-400 nunito-700 w-1/2 text-sm">
                   Засах
-                </button>
+                </button> */}
                 <button
                   onClick={() => {
                     handleDelete(anket.jobid);
@@ -169,9 +252,9 @@ function CV() {
         })}
       </div>
       <Modal
+        size="lg"
         show={show}
         onHide={handleClose}
-        backdrop="static"
         keyboard={false}
         centered
       >
@@ -182,15 +265,21 @@ function CV() {
                 className="w-14"
                 src="data:image/png;base64,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"
               ></img>
-              Мэдээ нэмэх
+              Ажлын зар нэмэх
             </div>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="w-full">
-            <select name="" id="">
-              <option value="0">Компани сонгоно уу.</option>
-              <option value="2">Инсталл наран Конкрит</option>
+            <select
+              onChange={(e) => {
+                setCompanyId(e.target.value);
+              }}
+              name=""
+              id=""
+            >
+              <option value="1">Компани сонгоно уу.</option>
+              <option value="2">Инсталл Наран Конкрит</option>
               <option value="1">Инсталл Наран Констрашн.</option>
             </select>
             <textarea
@@ -198,18 +287,81 @@ function CV() {
               type="text"
               placeholder="Гарчиг"
               required="required"
+              onChange={(e) => {
+                setJobTitle(e.target.value);
+              }}
             />
             <textarea
               className="px-3 py-2 border rounded w-full mt-[10px]"
               type="text"
               placeholder="Үүрэг"
               required="required"
+              onChange={(e) => {
+                setJobDuty(e.target.value);
+              }}
             />
+            <Form>
+              <span className="font-[500] text-gray-500/80  text-[17.5px]">
+                Тавигдах шаардлага :
+              </span>
+              <div className="flex flex-wrap gap-2 md:grid grid-cols-2">
+                {renderChildren()}
+              </div>
+              <button
+                className="active:scale-105"
+                onClick={(e) => {
+                  e.preventDefault();
+                  addChild();
+                }}
+              >
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACV0lEQVR4nO2Zy2oUURCGG28Ll15WXl4iGMxqdhKokqpeNErc+wpKNrNL3McwCb7BSFfBRN248BmU+ABqVuayTrtRqmccMCTM6T59OS39w4GBYab/71z/Ux1FvXr18lYyTi6j8AooraNSCsJfUfgElX7lTfgEhPfz75TWH6fxw+FweClqW6R0D4VfofABKv8u1ugHKG2upvHdxo2vjpPbqLwLSllx4/82UMpAaYQTvNWIeVRaQ6VjX+PngBxBGj+tzfjS7vOrIPymauN4FkR4x55VqXmc4HVQ+lC3efzbhN/bM6vr+SbN6xziYzJOrnkDNDFt8OJ1MfIzn8bP2jKP80ZPSpln4ZsgfBgAwHGpLdb2+bIPvUilp5LwdiHzdjr6HFKVAyhlOMH77r1v8cBj2KsGwCnEppN5C1mWU0IDQOEDC40uvb/i9aC6ADRfC8sLAaaROEwAFH7pMgISMMDbxSOQXzzKmywrdAP4sngEHKNyGwAgfOiyBrJQAVD49P8HwM5PIen6Ipaub6Ma7kEGSi8WAljRKVQATOMHTmEOhL+HBgDC35yreRZdQwNApY2oqxcaFD6FPbjjDDAbhVEwAEpbUVE9Gic3QrjUg9JR6bqp1SpbB5A4KWV+DiG802Lvv458ZfdQENbmAejd4NPgSlSFrNCaF1yb6/m9yoq7Z4q8oyamzaCqnj9PVqusZ3ein94LtmDddNsOGG/jYv9BW7ZtR03LTkeLHWWy0/Q3tFH4hK1DswC4bHUby+x28bCb3ewFXpZ/Fv5s31kktlQZxGvWXr2i7usPseDsn8oBAbAAAAAASUVORK5CYII="></img>
+              </button>
+            </Form>
+            <div className="grid grid-cols-2 w-full gap-2">
+              <div className="flex flex-col ">
+                <span className="font-[500] text-gray-500/80  text-[17.5px]">
+                  Эхлэх цаг :
+                </span>
+                <DatePicker
+                  selected={value}
+                  value={value}
+                  onChange={(date) => setValue(date)}
+                  className="form-control form-control-sm
+                                            py-2 mt-2 ml-0 border border-dark"
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={15}
+                  timeCaption="time"
+                  dateFormat="yyyy-MM-dd h:mm aa"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-[500] text-gray-500/80 text-[17.5px]">
+                  Дуусах цаг :
+                </span>
+                <DatePicker
+                  selected={selectV}
+                  value={selectV}
+                  onChange={(date) => setSelectV(date)}
+                  className="form-control form-control-sm
+                                            py-2 mt-2 ml-0 border border-dark"
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={15}
+                  timeCaption="time"
+                  dateFormat="yyyy-MM-dd h:mm aa"
+                />
+              </div>
+            </div>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary">Цуцлах</Button>
-          <Button variant="primary">Хадгалах</Button>
+          <Button onClick={handleClose} variant="secondary">
+            Цуцлах
+          </Button>
+          <Button onClick={handleSubmit} variant="primary">
+            Хадгалах
+          </Button>
         </Modal.Footer>
       </Modal>
     </Layout>
