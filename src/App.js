@@ -12,6 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import CV from "./pages/CV";
 import Anket from "./pages/Anket";
 import CVDetail from "./pages/CVDetail";
+import JobDetail from "./pages/JobDetail";
 function App() {
   return (
     <BrowserRouter>
@@ -45,6 +46,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CV />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/job-detail"
+          element={
+            <ProtectedRoute>
+              <JobDetail />
             </ProtectedRoute>
           }
         />

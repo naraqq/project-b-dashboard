@@ -24,6 +24,7 @@ function Anket() {
           setLoading(false);
           setAnkets(res.data.datas);
         } else {
+          setLoading(false);
           if (res.data.errorCode == 401) {
             logout();
           } else {
@@ -34,16 +35,15 @@ function Anket() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        setLoading(false);
       });
   }, []);
-  //   console.log(ankets);
   return (
     <Layout>
       <ToastContainer />
       {loading && <Loading />}
       <div className="w-full px-2 py-3 bg-gray-200 min-h-screen flex flex-col md:grid grid-cols-3 grid-rows-4 gap-4">
-        {ankets.map((anket, index) => {
+        {ankets?.map((anket, index) => {
           return (
             <div
               key={index}
